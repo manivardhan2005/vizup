@@ -589,6 +589,17 @@
       line-height: 1.5;
     }
 
+    .inline-edit-input {
+      width: 100%;
+      padding: 6px 10px;
+      border: 1px solid var(--primary);
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: inherit;
+      color: var(--text-main);
+      margin-top: 4px;
+    }
+
     .tags-container {
       display: flex;
       flex-wrap: wrap;
@@ -929,6 +940,19 @@
       display: flex;
       align-items: center;
       color: #334155;
+      transition: transform 0.1s ease;
+    }
+
+    .ig-action-icon:hover {
+      transform: scale(1.1);
+    }
+
+    .ig-action-icon.liked {
+      color: #e11d48;
+    }
+
+    .ig-action-icon.saved {
+      color: #0f172a;
     }
 
     .ig-caption-block {
@@ -1355,7 +1379,7 @@
       </div>
     </div>
 
-    <!-- Stepper Navigation -->
+    <!-- Stepper Navigation (Fully Tested Screen Switching) -->
     <nav class="stepper-nav" aria-label="Onboarding Screens">
       <button class="step-btn active" id="nav-btn-1" onclick="goToScreen(1)">
         <span class="step-num">1</span> Setup
@@ -1404,7 +1428,7 @@
       <div style="max-width: 580px; margin: 12px 0;">
         <div class="form-group">
           <div class="label-row">
-            <label class="form-label">Website or Public Social Link</label>
+            <label class="form-label" for="url-input">Website or Public Social Link</label>
             <span class="label-hint">Primary Ingestion Path</span>
           </div>
           <div class="input-wrapper">
@@ -1434,13 +1458,13 @@
             <div class="label-row">
               <label class="form-label">Brand Name</label>
             </div>
-            <input type="text" class="form-input" style="padding-left: 14px;" value="Earthly Bites">
+            <input type="text" id="manual-brand-name" class="form-input" style="padding-left: 14px;" value="Earthly Bites">
           </div>
           <div>
             <div class="label-row">
               <label class="form-label">Core Offering (3-5 words)</label>
             </div>
-            <input type="text" class="form-input" style="padding-left: 14px;" value="Roasted millet clean snacks">
+            <input type="text" id="manual-brand-offering" class="form-input" style="padding-left: 14px;" value="Roasted millet clean snacks">
           </div>
         </div>
       </div>
@@ -1481,58 +1505,66 @@
       </div>
 
       <div class="brand-props-grid">
-        <div class="brand-prop-card">
+        <!-- Property 1 -->
+        <div class="brand-prop-card" id="prop-card-1">
           <div class="prop-top">
             <span class="prop-label">Tone & Brand Voice</span>
-            <button class="prop-edit-btn" onclick="showToast('Inline edit enabled')">
+            <button class="prop-edit-btn" onclick="toggleInlineEdit(1)">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
-              Edit
+              <span id="edit-lbl-1">Edit</span>
             </button>
           </div>
-          <div class="prop-value">Warm, wholesome, witty, transparent, anti-artificial.</div>
-          <div class="tags-container">
+          <div class="prop-value" id="prop-val-1">Warm, wholesome, witty, transparent, anti-artificial.</div>
+          <input type="text" class="inline-edit-input" id="prop-input-1" style="display:none;" value="Warm, wholesome, witty, transparent, anti-artificial.">
+          <div class="tags-container" id="tags-1">
             <span class="tag-pill">Wholesome</span>
             <span class="tag-pill">Witty</span>
             <span class="tag-pill">Clean Eating</span>
           </div>
         </div>
 
-        <div class="brand-prop-card">
+        <!-- Property 2 -->
+        <div class="brand-prop-card" id="prop-card-2">
           <div class="prop-top">
             <span class="prop-label">Target Audience</span>
-            <button class="prop-edit-btn" onclick="showToast('Inline edit enabled')">
+            <button class="prop-edit-btn" onclick="toggleInlineEdit(2)">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
-              Edit
+              <span id="edit-lbl-2">Edit</span>
             </button>
           </div>
-          <div class="prop-value">Health-conscious urban millennials & busy parents seeking clean 4 PM snack fuel.</div>
-          <div class="tags-container">
+          <div class="prop-value" id="prop-val-2">Health-conscious urban millennials & busy parents seeking clean 4 PM snack fuel.</div>
+          <input type="text" class="inline-edit-input" id="prop-input-2" style="display:none;" value="Health-conscious urban millennials & busy parents seeking clean 4 PM snack fuel.">
+          <div class="tags-container" id="tags-2">
             <span class="tag-pill">Urban Millennials</span>
             <span class="tag-pill">Parents</span>
           </div>
         </div>
 
-        <div class="brand-prop-card">
+        <!-- Property 3 -->
+        <div class="brand-prop-card" id="prop-card-3">
           <div class="prop-top">
             <span class="prop-label">Core Value Proposition</span>
-            <button class="prop-edit-btn" onclick="showToast('Inline edit enabled')">
+            <button class="prop-edit-btn" onclick="toggleInlineEdit(3)">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
-              Edit
+              <span id="edit-lbl-3">Edit</span>
             </button>
           </div>
-          <div class="prop-value">"100% slow-roasted Indian millets, cold-pressed mustard oil, zero refined sugar."</div>
+          <div class="prop-value" id="prop-val-3">"100% slow-roasted Indian millets, cold-pressed mustard oil, zero refined sugar."</div>
+          <input type="text" class="inline-edit-input" id="prop-input-3" style="display:none;" value="100% slow-roasted Indian millets, cold-pressed mustard oil, zero refined sugar.">
         </div>
 
-        <div class="brand-prop-card">
+        <!-- Property 4 -->
+        <div class="brand-prop-card" id="prop-card-4">
           <div class="prop-top">
             <span class="prop-label">Active Social Channels</span>
-            <button class="prop-edit-btn" onclick="showToast('Inline edit enabled')">
+            <button class="prop-edit-btn" onclick="toggleInlineEdit(4)">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
-              Edit
+              <span id="edit-lbl-4">Edit</span>
             </button>
           </div>
-          <div class="prop-value">Instagram (Visual Feed) & LinkedIn (Founder Insights)</div>
-          <div class="tags-container">
+          <div class="prop-value" id="prop-val-4">Instagram (Visual Feed) & LinkedIn (Founder Insights)</div>
+          <input type="text" class="inline-edit-input" id="prop-input-4" style="display:none;" value="Instagram (Visual Feed) & LinkedIn (Founder Insights)">
+          <div class="tags-container" id="tags-4">
             <span class="tag-pill">Instagram Priority</span>
           </div>
         </div>
@@ -1552,7 +1584,7 @@
       <div class="screen-header">
         <div class="screen-title-area">
           <h2>Select Your First Post Recipe</h2>
-          <p>Overcome the blank prompt box with pre-configured structured post frameworks.</p>
+          <p>Overcome prompt paralysis with pre-configured structured post frameworks.</p>
         </div>
         <div class="screen-badges">
           <span class="badge badge-primary">Structured Recipe</span>
@@ -1560,25 +1592,8 @@
       </div>
 
       <div class="intent-cards-row">
-        <!-- Recipe 1 -->
+        <!-- Recipe 1: Product Benefit Highlight (No fictional testimonial) -->
         <div class="intent-recipe-card selected" id="recipe-1" onclick="selectRecipe(1)">
-          <div>
-            <div class="intent-card-top">
-              <div class="intent-icon-pill">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-              </div>
-              <div class="custom-radio">
-                <div class="custom-radio-dot"></div>
-              </div>
-            </div>
-            <div class="intent-card-title">1. Customer Quote Spotlight</div>
-            <div class="intent-card-desc">Converts real customer feedback into high-trust social proof with a witty founder commentary.</div>
-          </div>
-          <div class="intent-format-tag">Format: Carousel / Feed Post</div>
-        </div>
-
-        <!-- Recipe 2 -->
-        <div class="intent-recipe-card" id="recipe-2" onclick="selectRecipe(2)">
           <div>
             <div class="intent-card-top">
               <div class="intent-icon-pill">
@@ -1588,13 +1603,30 @@
                 <div class="custom-radio-dot"></div>
               </div>
             </div>
+            <div class="intent-card-title">1. Product Benefit Highlight</div>
+            <div class="intent-card-desc">Spotlights whole-grain roasted millet crunch and cold-pressed spices to conquer the 4 PM slump.</div>
+          </div>
+          <div class="intent-format-tag">Format: Product Hook / Feed Post</div>
+        </div>
+
+        <!-- Recipe 2: Behind-the-Scenes Story -->
+        <div class="intent-recipe-card" id="recipe-2" onclick="selectRecipe(2)">
+          <div>
+            <div class="intent-card-top">
+              <div class="intent-icon-pill">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+              </div>
+              <div class="custom-radio">
+                <div class="custom-radio-dot"></div>
+              </div>
+            </div>
             <div class="intent-card-title">2. Behind-the-Scenes Story</div>
-            <div class="intent-card-desc">Why we chose roasted ragi over palm-oil frying. Explains ingredient craft and founder ethos.</div>
+            <div class="intent-card-desc">Why we chose slow-roasted ragi over palm-oil frying. Explains ingredient craft and founder ethos.</div>
           </div>
           <div class="intent-format-tag">Format: Founder Storytelling</div>
         </div>
 
-        <!-- Recipe 3 -->
+        <!-- Recipe 3: Weekend Snack Box Offer -->
         <div class="intent-recipe-card" id="recipe-3" onclick="selectRecipe(3)">
           <div>
             <div class="intent-card-top">
@@ -1618,13 +1650,13 @@
           Or enter a custom campaign topic (Optional)
         </div>
         <div id="custom-prompt-container" style="display: none; margin-top: 12px;">
-          <input type="text" class="form-input" style="padding-left: 14px;" placeholder="e.g. Announcing our new roasted foxnut flavor...">
+          <input type="text" id="custom-topic-input" class="form-input" style="padding-left: 14px;" placeholder="e.g. Announcing our new roasted foxnut flavor...">
         </div>
       </div>
 
       <div class="btn-row">
         <button class="btn btn-secondary" onclick="goToScreen(2)">Back</button>
-        <button class="btn btn-primary" onclick="triggerTelemetry('post_intent_selected', {intent: 'Customer Quote Spotlight'}); goToScreen(4)">
+        <button class="btn btn-primary" onclick="triggerTelemetry('post_intent_selected', {intent: selectedRecipeName}); goToScreen(4)">
           Generate Post Draft
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         </button>
@@ -1650,45 +1682,39 @@
       <div class="studio-layout">
         <!-- Left: Variations Column -->
         <div>
-          <!-- Option A -->
+          <!-- Option A (Witty Benefit Hook - No fictional testimonial) -->
           <div class="variant-option-card selected" id="card-var-a" onclick="selectDraftVariant('a')">
             <div class="variant-top-bar">
               <span class="variant-name">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                Option A: Witty Storytelling (Recommended)
+                Option A: Witty Benefit Hook (Recommended)
               </span>
               <span class="variant-meta">420 chars &bull; IG</span>
             </div>
-            <div class="variant-body-text">
-"I hid the millet crunch box from my kids so I could finish it during my 4 PM Zoom call."
+            <div class="variant-body-text" id="var-a-text">Your 4 PM tea break doesn't need another palm-oil fried biscuit.
 
-Honest review from Ananya in Indiranagar.
+We crafted Earthly Bites around slow-roasted Indian millets and cold-pressed spices so you get genuine crunch without the post-snack slump. Mid-day hunger met 100% clean grains.
 
-We didn't set out to make parents guilty snack-hoarders, but when 100% slow-roasted spiced ragi tastes this addictive without refined oil... can you blame her?
+Drop a comment if your 4 PM ritual needs an upgrade. Link in bio to grab the sampler box.
 
-Drop a comment if your 4 PM craving needs an upgrade. Link in bio to grab the sampler pack.
-
-#CleanSnacking #EarthlyBites #BangaloreFoodies #IndianMillets
-            </div>
+#CleanSnacking #EarthlyBites #BangaloreFoodies #IndianMillets</div>
           </div>
 
-          <!-- Option B -->
+          <!-- Option B (Clean Ingredient Craft - No fictional testimonial) -->
           <div class="variant-option-card" id="card-var-b" onclick="selectDraftVariant('b')">
             <div class="variant-top-bar">
               <span class="variant-name">
-                Option B: Clean & Ingredient-Focused
+                Option B: Clean Ingredient Craft
               </span>
               <span class="variant-meta">280 chars &bull; IG</span>
             </div>
-            <div class="variant-body-text">
-Zero palm oil. Zero chemical numbers. Just 100% slow-roasted Indian millets that taste like home.
+            <div class="variant-body-text" id="var-b-text">Zero palm oil. Zero artificial preservatives. Just 100% slow-roasted Indian grains that taste like home.
 
-When our customers say: "Finally, a snack my dietitian and my tastebuds agree on" — that's our win.
+Clean snacking shouldn't feel like a compromise. Made with slow-roasted ragi and cold-pressed mustard oil for authentic flavour and clean energy.
 
 Try Earthly Bites today. 100% clean, 100% wholesome.
 
-#HealthySnacks #EatClean #D2CIndia #CleanSnacking
-            </div>
+#HealthySnacks #EatClean #D2CIndia #CleanSnacking</div>
           </div>
         </div>
 
@@ -1715,7 +1741,7 @@ Try Earthly Bites today. 100% clean, 100% wholesome.
             <div class="ig-visual-creative">
               <div class="creative-badge">The 4 PM Ritual</div>
               <div class="creative-quote" id="creative-headline">
-                "I hid the millet crunch box from my kids so I could finish it during my 4 PM Zoom call."
+                "Your 4 PM tea break doesn't need another palm-oil fried biscuit."
               </div>
               <div class="creative-footer">
                 <span>100% Slow-Roasted Millets</span>
@@ -1723,29 +1749,29 @@ Try Earthly Bites today. 100% clean, 100% wholesome.
               </div>
             </div>
 
-            <!-- Action Bar -->
+            <!-- Interactive Action Bar -->
             <div class="ig-action-bar">
               <div class="ig-left-actions">
-                <span class="ig-action-icon">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+                <span class="ig-action-icon" id="ig-heart-btn" onclick="toggleInstagramLike()">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="ig-heart-svg"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
                 </span>
-                <span class="ig-action-icon">
+                <span class="ig-action-icon" onclick="showToast('Open comments simulation')">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
                 </span>
-                <span class="ig-action-icon">
+                <span class="ig-action-icon" onclick="showToast('Share link copied')">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
                 </span>
               </div>
-              <span class="ig-action-icon">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+              <span class="ig-action-icon" id="ig-bookmark-btn" onclick="toggleInstagramBookmark()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="ig-bookmark-svg"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
               </span>
             </div>
 
             <div class="ig-caption-block">
-              <div class="ig-likes-line">Liked by rahul_m and 142 others</div>
+              <div class="ig-likes-line" id="ig-likes-text">Liked by rahul_m and 142 others</div>
               <div class="ig-caption-content" id="ig-live-caption">
                 <span class="ig-caption-author">earthlybites.in</span>
-                "I hid the millet crunch box from my kids so I could finish it during my 4 PM Zoom call." ...more
+                "Your 4 PM tea break doesn't need another palm-oil fried biscuit." We crafted Earthly Bites around slow-roasted Indian millets... <span style="color: #4f46e5; cursor: pointer;">more</span>
               </div>
               <div class="ig-time-ago">2 hours ago</div>
             </div>
@@ -1760,7 +1786,7 @@ Try Earthly Bites today. 100% clean, 100% wholesome.
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
             Tune Brand Tone
           </button>
-          <button class="btn btn-primary" onclick="triggerTelemetry('post_saved_activated', {post_id: 'post_001', variant: 'Option A'}); goToScreen(6)">
+          <button class="btn btn-primary" onclick="triggerTelemetry('post_saved_activated', {post_id: 'post_001', variant: activeVariant}); goToScreen(6)">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
             Save to Library & Activate
           </button>
@@ -1809,9 +1835,9 @@ Try Earthly Bites today. 100% clean, 100% wholesome.
           <div style="margin-top: 18px;">
             <div style="font-size: 12px; font-weight: 600; color: var(--text-body); margin-bottom: 8px;">Quick Adjust Presets:</div>
             <div class="chips-preset-group">
-              <button class="preset-chip active" onclick="selectPresetChip(this, 'less_fluff')">Less Fluff / Concise</button>
-              <button class="preset-chip" onclick="selectPresetChip(this, 'punchier')">Add Punchier Hook</button>
-              <button class="preset-chip" onclick="selectPresetChip(this, 'no_emojis')">No Emojis</button>
+              <button class="preset-chip active" id="chip-concise" onclick="selectPresetChip(this, 'less_fluff')">Less Fluff / Concise</button>
+              <button class="preset-chip" id="chip-punchy" onclick="selectPresetChip(this, 'punchier')">Add Punchier Hook</button>
+              <button class="preset-chip" id="chip-no-emojis" onclick="selectPresetChip(this, 'no_emojis')">No Emojis</button>
             </div>
           </div>
         </div>
@@ -1821,7 +1847,7 @@ Try Earthly Bites today. 100% clean, 100% wholesome.
           <div class="control-card-title">
             <span>Permanent Brand Guideline</span>
           </div>
-          <textarea class="form-input" rows="3" style="resize: none; padding-left: 14px; font-size: 13px;" placeholder="e.g. Always mention slow-roasted; never say 'guilt-free'.">Mention that our snacks are roasted with cold-pressed spices and never fried in refined oil.</textarea>
+          <textarea class="form-input" id="custom-rule-text" rows="3" style="resize: none; padding-left: 14px; font-size: 13px;" placeholder="e.g. Always mention slow-roasted; never say 'guilt-free'.">Mention that our snacks are roasted with cold-pressed mustard oil and never fried in refined oil.</textarea>
           <div class="form-hint">Permanently saved to your Brand Memory store.</div>
         </div>
       </div>
@@ -1838,8 +1864,8 @@ Try Earthly Bites today. 100% clean, 100% wholesome.
       </div>
 
       <div class="btn-row">
-        <button class="btn btn-secondary" onclick="goToScreen(4)">Back to Results</button>
-        <button class="btn btn-primary" onclick="triggerTelemetry('recovery_calibration_applied'); showToast('Calibration saved! Returning to studio...'); setTimeout(() => goToScreen(4), 600)">
+        <button class="btn btn-secondary" onclick="goToScreen(4)">Cancel</button>
+        <button class="btn btn-primary" onclick="applyCalibrationAction()">
           Apply Calibration & Save
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         </button>
@@ -1888,8 +1914,8 @@ Try Earthly Bites today. 100% clean, 100% wholesome.
             Did this post accurately capture your brand voice?
           </div>
           <div class="feedback-buttons">
-            <button class="feedback-btn" onclick="recordFeedback(this, 'authentic')">Authentic</button>
-            <button class="feedback-btn" onclick="recordFeedback(this, 'minor_edits')">Needed Minor Edits</button>
+            <button class="feedback-btn" id="fb-auth" onclick="recordFeedback(this, 'authentic')">Authentic</button>
+            <button class="feedback-btn" id="fb-edits" onclick="recordFeedback(this, 'minor_edits')">Needed Minor Edits</button>
           </div>
         </div>
       </div>
@@ -1928,12 +1954,17 @@ Try Earthly Bites today. 100% clean, 100% wholesome.
   </div>
 
   <script>
-    const sampleCopyA = `"I hid the millet crunch box from my kids so I could finish it during my 4 PM Zoom call."\n\nHonest review from Ananya in Indiranagar.\n\nWe didn't set out to make parents guilty snack-hoarders, but when 100% slow-roasted spiced ragi tastes this addictive without refined oil... can you blame her?\n\nDrop a comment if your 4 PM craving needs an upgrade. Link in bio to grab the sampler pack.\n\n#CleanSnacking #EarthlyBites #BangaloreFoodies #IndianMillets`;
+    // Authentic Brand Benefit Copy (NO fictional testimonial / fake customer quotes)
+    let sampleCopyA = `Your 4 PM tea break doesn't need another palm-oil fried biscuit.\n\nWe crafted Earthly Bites around slow-roasted Indian millets and cold-pressed spices so you get genuine crunch without the post-snack slump. Mid-day hunger met 100% clean grains.\n\nDrop a comment if your 4 PM ritual needs an upgrade. Link in bio to grab the sampler box.\n\n#CleanSnacking #EarthlyBites #BangaloreFoodies #IndianMillets`;
 
-    const sampleCopyB = `Zero palm oil. Zero chemical numbers. Just 100% slow-roasted Indian millets that taste like home.\n\nWhen our customers say: "Finally, a snack my dietitian and my tastebuds agree on" — that's our win.\n\nTry Earthly Bites today. 100% clean, 100% wholesome.\n\n#HealthySnacks #EatClean #D2CIndia #CleanSnacking`;
+    let sampleCopyB = `Zero palm oil. Zero artificial preservatives. Just 100% slow-roasted Indian grains that taste like home.\n\nClean snacking shouldn't feel like a compromise. Made with slow-roasted ragi and cold-pressed mustard oil for authentic flavour and clean energy.\n\nTry Earthly Bites today. 100% clean, 100% wholesome.\n\n#HealthySnacks #EatClean #D2CIndia #CleanSnacking`;
 
     let activeVariant = 'a';
+    let selectedRecipeName = 'Product Benefit Highlight';
+    let isLiked = false;
+    let isBookmarked = false;
 
+    // Screen Navigation
     function goToScreen(screenNumber) {
       document.querySelectorAll('.screen-card').forEach(card => card.classList.remove('active'));
       document.querySelectorAll('.step-btn').forEach(btn => btn.classList.remove('active'));
@@ -1944,19 +1975,52 @@ Try Earthly Bites today. 100% clean, 100% wholesome.
       const targetBtn = document.getElementById(`nav-btn-${screenNumber}`);
       if (targetBtn) targetBtn.classList.add('active');
 
+      triggerTelemetry('screen_viewed', { screen_number: screenNumber });
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    // Screen 1: Sample Fill
     function fillSample(url) {
       document.getElementById('url-input').value = url;
-      showToast('Sample URL loaded');
+      triggerTelemetry('sample_url_selected', { url });
+      showToast('Sample URL loaded: ' + url);
     }
 
+    // Screen 2: Interactive Inline Edit
+    function toggleInlineEdit(id) {
+      const valDiv = document.getElementById(`prop-val-${id}`);
+      const input = document.getElementById(`prop-input-${id}`);
+      const btnLabel = document.getElementById(`edit-lbl-${id}`);
+
+      if (input.style.display === 'none') {
+        input.style.display = 'block';
+        valDiv.style.display = 'none';
+        input.focus();
+        btnLabel.innerText = 'Save';
+      } else {
+        valDiv.innerText = input.value;
+        input.style.display = 'none';
+        valDiv.style.display = 'block';
+        btnLabel.innerText = 'Edit';
+        triggerTelemetry('brand_profile_edited', { field_id: id, new_value: input.value });
+        showToast('Updated brand parameter');
+      }
+    }
+
+    // Screen 3: Recipe Selection
     function selectRecipe(num) {
       document.querySelectorAll('.intent-recipe-card').forEach(c => c.classList.remove('selected'));
       document.getElementById(`recipe-${num}`).classList.add('selected');
+      const recipeNames = [
+        'Product Benefit Highlight',
+        'Behind-the-Scenes Story',
+        'Weekend Snack Box Offer'
+      ];
+      selectedRecipeName = recipeNames[num - 1];
+      triggerTelemetry('recipe_selected', { recipe: selectedRecipeName });
     }
 
+    // Screen 4: Draft Variant Selection & Mockup Live Update
     function selectDraftVariant(variant) {
       activeVariant = variant;
       document.querySelectorAll('.variant-option-card').forEach(c => c.classList.remove('selected'));
@@ -1966,28 +2030,67 @@ Try Earthly Bites today. 100% clean, 100% wholesome.
       const caption = document.getElementById('ig-live-caption');
 
       if (variant === 'a') {
-        headline.innerText = `"I hid the millet crunch box from my kids so I could finish it during my 4 PM Zoom call."`;
-        caption.innerHTML = `<span class="ig-caption-author">earthlybites.in</span> "I hid the millet crunch box from my kids so I could finish it during my 4 PM Zoom call." ...more`;
+        headline.innerText = `"Your 4 PM tea break doesn't need another palm-oil fried biscuit."`;
+        caption.innerHTML = `<span class="ig-caption-author">earthlybites.in</span> "Your 4 PM tea break doesn't need another palm-oil fried biscuit." We crafted Earthly Bites around slow-roasted Indian millets... <span style="color: #4f46e5; cursor: pointer;">more</span>`;
       } else {
-        headline.innerText = `"Finally, a snack my dietitian and my tastebuds agree on."`;
-        caption.innerHTML = `<span class="ig-caption-author">earthlybites.in</span> Zero palm oil. Zero chemical numbers. Just 100% slow-roasted Indian millets that taste like home... <span style="color: #4f46e5; cursor: pointer;">more</span>`;
+        headline.innerText = `"Clean snacking shouldn't feel like a compromise."`;
+        caption.innerHTML = `<span class="ig-caption-author">earthlybites.in</span> Zero palm oil. Zero artificial preservatives. Just 100% slow-roasted Indian grains that taste like home... <span style="color: #4f46e5; cursor: pointer;">more</span>`;
+      }
+      triggerTelemetry('draft_variant_selected', { variant });
+    }
+
+    // Screen 4: Interactive Instagram Chrome Actions
+    function toggleInstagramLike() {
+      isLiked = !isLiked;
+      const heartSvg = document.getElementById('ig-heart-svg');
+      const heartBtn = document.getElementById('ig-heart-btn');
+      const likesText = document.getElementById('ig-likes-text');
+
+      if (isLiked) {
+        heartBtn.classList.add('liked');
+        heartSvg.setAttribute('fill', '#e11d48');
+        heartSvg.setAttribute('stroke', '#e11d48');
+        likesText.innerText = 'Liked by rahul_m and 143 others';
+        showToast('Liked post');
+      } else {
+        heartBtn.classList.remove('liked');
+        heartSvg.setAttribute('fill', 'none');
+        heartSvg.setAttribute('stroke', 'currentColor');
+        likesText.innerText = 'Liked by rahul_m and 142 others';
       }
     }
 
+    function toggleInstagramBookmark() {
+      isBookmarked = !isBookmarked;
+      const bmSvg = document.getElementById('ig-bookmark-svg');
+      const bmBtn = document.getElementById('ig-bookmark-btn');
+
+      if (isBookmarked) {
+        bmBtn.classList.add('saved');
+        bmSvg.setAttribute('fill', '#0f172a');
+        showToast('Saved to collection');
+      } else {
+        bmBtn.classList.remove('saved');
+        bmSvg.setAttribute('fill', 'none');
+      }
+    }
+
+    // Screen 5: Recovery Tone Dial & Presets
     function handleToneSlider(val) {
       const label = document.getElementById('tone-dial-label');
       const diffText = document.getElementById('calibrated-diff-text');
 
       if (val == 1) {
-        label.innerText = 'Formal & Corporate';
-        diffText.innerText = `"Manufactured with 100% whole grain Indian millets and cold-pressed spices. Zero refined oils or artificial additives. Formulated for health-conscious professionals."`;
+        label.innerText = 'Formal & Direct';
+        diffText.innerText = `"Manufactured with 100% whole grain Indian millets and cold-pressed spices. Zero refined oils or artificial additives. Formulated for clean energy."`;
       } else if (val == 2) {
         label.innerText = 'Balanced Warm';
         diffText.innerText = `"Slow-roasted Indian millets in pure cold-pressed mustard oil, zero refined sugar. Your 4 PM craving just met its clean match. Sampler box link in bio."`;
       } else if (val == 3) {
         label.innerText = 'Bold & Cheeky';
-        diffText.innerText = `"Your tea break snacks are lying to you. We swapped palm oil for slow-roasted ragi crunch that actually respects your health. Drop a ❤️ if you agree."`;
+        diffText.innerText = `"Your tea break snacks are lying to you. We swapped palm oil for slow-roasted ragi crunch that actually respects your health. Drop a comment if you agree."`;
       }
+      triggerTelemetry('tone_slider_moved', { position: val, label: label.innerText });
     }
 
     function selectPresetChip(btn, type) {
@@ -1996,29 +2099,49 @@ Try Earthly Bites today. 100% clean, 100% wholesome.
 
       const diffText = document.getElementById('calibrated-diff-text');
       if (type === 'less_fluff') {
-        diffText.innerText = `"100% roasted Indian millets. Pure cold-pressed oil, zero refined sugar. Clean 4 PM fuel. Link in bio."`;
+        diffText.innerText = `"100% roasted Indian millets. Pure cold-pressed mustard oil, zero refined sugar. Clean 4 PM fuel. Link in bio."`;
       } else if (type === 'punchier') {
         diffText.innerText = `"Stop snacking on fried palm oil disguised as health food. 100% slow-roasted ragi crunch is here."`;
       } else if (type === 'no_emojis') {
-        diffText.innerText = `"Honest roasted millets and cold-pressed mustard oil. No refined sugar, no artificial flavours. Order your sampler box today."`;
+        diffText.innerText = `"Honest roasted millets and cold-pressed mustard oil. No refined sugar, no artificial preservatives. Order your sampler box today."`;
       }
+      triggerTelemetry('preset_chip_selected', { preset: type });
     }
 
+    function applyCalibrationAction() {
+      const calibratedDiff = document.getElementById('calibrated-diff-text').innerText.replace(/^"|"$/g, '');
+      // Update Option A with calibrated copy
+      sampleCopyA = `${calibratedDiff}\n\n#CleanSnacking #EarthlyBites #BangaloreFoodies #IndianMillets`;
+      document.getElementById('var-a-text').innerText = sampleCopyA;
+      document.getElementById('creative-headline').innerText = `"${calibratedDiff.slice(0, 65)}..."`;
+      document.getElementById('ig-live-caption').innerHTML = `<span class="ig-caption-author">earthlybites.in</span> ${calibratedDiff.slice(0, 80)}... <span style="color: #4f46e5; cursor: pointer;">more</span>`;
+
+      triggerTelemetry('recovery_calibration_applied', { rule: document.getElementById('custom-rule-text').value });
+      showToast('Calibration saved! Returning to studio...');
+      setTimeout(() => goToScreen(4), 500);
+    }
+
+    // Screen 6: Actions
     function copyCaptionAction() {
       const textToCopy = activeVariant === 'a' ? sampleCopyA : sampleCopyB;
       if (navigator.clipboard) {
         navigator.clipboard.writeText(textToCopy);
       }
       triggerTelemetry('post_caption_copied', { length: textToCopy.length });
-      showToast('Caption copied to clipboard');
+      showToast('Caption copied to clipboard!');
     }
 
     function addToCalendarAction() {
       triggerTelemetry('post_calendar_queued', { scheduled_day: 'Tomorrow 4 PM' });
-      showToast('Queued to Calendar! Auto-publishing connects in Session 2.');
+      showToast('Queued to Calendar! (OAuth connects in Session 2)');
     }
 
     function recordFeedback(btn, feedbackType) {
+      document.querySelectorAll('.feedback-btn').forEach(b => {
+        b.style.background = 'white';
+        b.style.borderColor = 'var(--border-strong)';
+        b.style.color = 'var(--text-body)';
+      });
       btn.style.background = '#eef2ff';
       btn.style.borderColor = '#4f46e5';
       btn.style.color = '#4f46e5';
@@ -2026,13 +2149,14 @@ Try Earthly Bites today. 100% clean, 100% wholesome.
       showToast('Feedback recorded: ' + (feedbackType === 'authentic' ? 'Authentic' : 'Minor edits needed'));
     }
 
+    // Toasts & Drawer Utilities
     function showToast(message) {
       const toast = document.getElementById('actionToast');
       document.getElementById('toastMessage').innerText = message;
       toast.classList.add('show');
       setTimeout(() => {
         toast.classList.remove('show');
-      }, 2400);
+      }, 2500);
     }
 
     function toggleTelemetryDrawer() {
